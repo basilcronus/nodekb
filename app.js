@@ -25,6 +25,8 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', (req, res) => {
     let articles = Article.find({}, (err, articles) => {
         if(err) {
@@ -38,6 +40,13 @@ app.get('/', (req, res) => {
 app.get('/articles/add', (req, res) => {
     res.render('add_article', {title: 'Add Article'})
 });
+
+app.get('/article/:id', (req, res) => {
+    Article.findById(req.params.id, (err, article) => {
+        console.log(article);
+    });
+});
+
 
 app.post('/articles/add', (req, res) => {
     let article = new Article();
